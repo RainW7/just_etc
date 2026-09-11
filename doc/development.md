@@ -3,6 +3,100 @@
 `py/just_etc/` 保存 Python 包；`examples/` 保存科研工作流；`doc/` 保存文档。
 修改仪器参数时同步检查 `etc/spec.dat` 与包内默认配置。
 
+
+
+## 创建分支
+
+建议每次按“**创建分支 → 修改 → 测试 → 提交 → 推送 → 合并**”操作。
+
+**1. 更新主分支，然后创建工作分支**
+
+在终端执行：
+
+```
+cd /Users/rain/just_etc
+
+git switch main
+git pull --ff-only
+
+git switch -c branch-name
+```
+
+`branch-name` 是示例名称，可换成能描述本次工作的名称。创建后会自动切换到该分支。
+
+**2. 修改文件并测试**
+
+直接用编辑器修改这个目录里的文件。主要位置是：
+
+| 想修改的内容         | 位置                                                   |
+| -------------------- | ------------------------------------------------------ |
+| Python API、计算代码 | `py/just_etc/`                                         |
+| 科研示例             | `examples/`                                            |
+| 文档                 | `doc/`                                                 |
+| 默认仪器参数         | `py/just_etc/data/spec.dat`，并同步更新 `etc/spec.dat` |
+
+首次在这个克隆目录开发时，在科研环境中做一次“可编辑安装”：
+
+```
+conda activate base
+python -m pip install -e . --no-deps
+```
+
+之后修改 Python 源码通常不需要重新安装。完成修改后运行：
+
+```
+python -m pytest py/just_etc/test -q
+```
+
+**3. 检查并提交修改**
+
+```
+git status
+git diff
+
+# 将本次修改的文件加入暂存区，按实际文件调整
+git add py/just_etc/just_etc_api.py doc/usage.md
+
+# 将暂存内容保存为一个本地提交
+git commit -m "Improve SNR calculation and update documentation"
+```
+
+`git commit` 只保存到本地，尚未上传 GitHub。
+
+**4. 上传工作分支**
+
+第一次推送这个分支：
+
+```
+git push -u origin branch-name
+```
+
+以后在同一个分支继续修改，重复 `git add`、`git commit` 后，只需：
+
+```
+git push
+```
+
+此时 GitHub 上会出现并更新 `branch-name` 分支，`main` 还没有改变。
+
+**5. 在 GitHub 合并，再同步本地**
+
+打开[仓库](https://github.com/RainW7/just_etc)，点击 **Compare & pull request**，确认：
+
+- **base：`main`**
+- **compare：`branch-name`**
+
+创建 Pull Request，检查差异和自动测试结果，通过后点击 **Merge pull request**。随后回到终端：
+
+```
+git switch main
+git pull --ff-only
+```
+
+下一项工作再从这个更新后的 `main` 创建新分支即可。
+
+
+
 ## 日常修改
 
 ```sh
@@ -21,6 +115,8 @@ git push -u origin improve-etc
 然后在 GitHub 创建 Pull Request，检查修改和测试后合并。每次新工作从最新
 `main` 建立分支；已有同名分支时用 `git switch` 切换。`git add` 只添加本次
 需要的文件，避免把数据输出或缓存一起提交。不要用强制推送覆盖远端历史。
+
+
 
 ## 打包
 
