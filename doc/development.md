@@ -31,14 +31,8 @@ python -m pip install build
 python -m build
 ```
 
-原 Python 3.6 环境也可以使用已有 setuptools/wheel：
-
-```sh
-python setup.py sdist bdist_wheel
-```
-
 版本号位于 `py/just_etc/_version.py`。发布新版本时更新版本和变更说明，完成
 测试后再创建版本标签；不要将 GitHub 上传与 PyPI 发布混为一谈。
 
-macOS 默认文件系统通常不区分大小写：本机的 `JUST_ETC` 与 `just_etc` 可能是
+macOS 默认文件系统通常不区分大小写： `JUST_ETC` 与 `just_etc` 可能是
 同一目录。克隆到新目录时选择明确不同的名称，避免混入历史工作文件。
