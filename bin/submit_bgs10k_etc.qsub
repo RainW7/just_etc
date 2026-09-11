@@ -1,0 +1,53 @@
+#!/bin/bash
+#PBS -N JUST_ETC_BGS10K
+#PBS -q small
+#PBS -l nodes=1:ppn=16
+#PBS -l walltime=04:00:00
+#PBS -j oe
+#PBS -o bgs10k.log
+
+# Switch to the submission working directory
+cd $PBS_O_WORKDIR
+
+# Ensure output and log directories exist
+mkdir -p /home/wenrun/output
+mkdir -p logs
+
+# Environment activation (Source profile.d/conda.sh explicitly for non-interactive shell)
+if [ -f "/home/wenrun/miniconda3/etc/profile.d/conda.sh" ]; then
+    source "/home/wenrun/miniconda3/etc/profile.d/conda.sh"
+    conda activate base
+elif [ -f "/opt/anaconda3/etc/profile.d/conda.sh" ]; then
+    source "/opt/anaconda3/etc/profile.d/conda.sh"
+    conda activate base
+else
+    source ~/.bashrc
+fi
+
+# Fallback: determine python executable path
+PYTHON_BIN="$(which python 2>/dev/null || echo '/home/wenrun/miniconda3/bin/python')"
+
+INPUT_FITS="/home/yzgu/work/work-just/justspecsimu/milestone2026/spectrum_library/BGS_z01/input-spectra.fits"
+OUTPUT_FITS="/home/wenrun/output/just_redrock_bgs_10k_obs.fits"
+
+echo "=========================================================================="
+echo "SJTU Gravity Cluster PBS Job Started: $(date)"
+echo "Job ID           : $PBS_JOBID"
+echo "Running Node     : $(hostname)"
+echo "Python Executable: $PYTHON_BIN"
+echo "Working Directory: $(pwd)"
+echo "Input File       : $INPUT_FITS"
+echo "Output File      : $OUTPUT_FITS"
+echo "=========================================================================="
+
+$PYTHON_BIN process_bgs_10k_redrock.py \
+    --input $INPUT_FITS \
+    --output $OUTPUT_FITS \
+    --t_exp 900 \
+    --n_exp 4 \
+    --seeing 0.8 \
+    --nproc 16
+
+echo "=========================================================================="
+echo "PBS Job Finished: $(date)"
+echo "=========================================================================="
