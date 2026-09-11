@@ -6,17 +6,11 @@ for the Jiaotong University Spectroscopic Telescope (JUST). It includes a
 Numba-accelerated ETC engine, a Python API, a command-line calculator, the
 instrument configuration, and 40 example FITS spectral templates.
 
-The scientific implementation is migrated from ``ETC_py_v1``. This repository
-organizes it as an installable package following the
-`DESI software template <https://github.com/desihub/desitemplate>`_.
-The existing BSD-3-Clause license and Git history are retained.
-
 Installation
 ------------
 
 Use an environment containing compatible NumPy, SciPy, Astropy, Numba and
-Matplotlib versions. Python 3.6 remains supported for the original research
-environment; a current Python environment is recommended for new installations.
+Matplotlib versions. A current Python environment is recommended for new installations.
 
 .. code-block:: bash
 
