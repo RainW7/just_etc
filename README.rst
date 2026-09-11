@@ -25,6 +25,7 @@ existing research environment unnecessarily.
 
 Quick start
 -----------
+For Python:
 
 .. code-block:: python
 
@@ -32,7 +33,7 @@ Quick start
     from just_etc import JUSTExposureTimeCalculator, load_template, normalize_to_mag
 
     wave, flux = load_template("galaxy/elliptical_001.fits")
-    flux, scale = normalize_to_mag(wave, flux, target_mag=21.5, band="r")
+    flux, scale = normalize_to_mag(wave, flux, target_mag=21.0, band="r")
     etc = JUSTExposureTimeCalculator(calc_mode="fast")
     etc.set_obs_conditions(seeing_fwhm_800=0.8, r_eff=0.0)
     arms = etc.compute_snr(wave, flux, t_exp=900.0, n_exp=4)
@@ -44,10 +45,12 @@ each exposure in seconds; the example totals 3600 s. ``snr`` is the combined
 per-pixel SNR, not an integrated line or resolution-element SNR. Magnitude
 normalization uses approximate band windows, not full filter transmission curves.
 
+For bash: 
+
 .. code-block:: bash
 
-    just-etc --mag 21.5 --band r --texp 900 --nexp 4 --target point
-    just-etc --mag 22 --target extended --reff 0.6 --target-snr 5 --ref-wave 600
+    just-etc --mag 20.5 --band r --texp 900 --nexp 4 --target point
+    just-etc --mag 21 --target extended --reff 0.6 --target-snr 5 --ref-wave 600
 
 The first invocation may take longer while Numba compiles numerical kernels.
 The CLI uses a starburst template by default; ``--target point`` changes spatial
