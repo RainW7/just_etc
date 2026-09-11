@@ -1,4 +1,4 @@
-# JUST Exposure Time Calculator (JUST ETC v1)
+# JUST Exposure Time Calculator (JUST ETC v1.0)
 
 This directory contains the standardized distribution package and codebase for the **JUST (Jiaotong University Spectroscopic Telescope, 4.4-meter aperture) Exposure Time Calculator (ETC)**, designed for standalone scientific research, server deployments, and batch PBS jobs on the SJTU Gravity HPC cluster.
 
