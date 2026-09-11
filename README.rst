@@ -47,10 +47,13 @@ normalization uses approximate band windows, not full filter transmission curves
 
 For bash: 
 
-Calculate SNR of a 
+Calculate SNR of a point source:
+
 .. code-block:: bash
 
     just-etc --mag 20.5 --band r --texp 900 --nexp 4 --target point
+
+Calculate exposure time required for a target SNR of a extended source:
 
 .. code-block:: bash
 
