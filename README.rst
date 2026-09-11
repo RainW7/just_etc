@@ -47,9 +47,13 @@ normalization uses approximate band windows, not full filter transmission curves
 
 For bash: 
 
+Calculate SNR of a 
 .. code-block:: bash
 
     just-etc --mag 20.5 --band r --texp 900 --nexp 4 --target point
+
+.. code-block:: bash
+
     just-etc --mag 21 --target extended --reff 0.6 --target-snr 5 --ref-wave 600
 
 The first invocation may take longer while Numba compiles numerical kernels.
