@@ -1,0 +1,6 @@
+#!/usr/bin/env python
+"""Run the installed JUST ETC command-line calculator."""
+from just_etc.cli import main
+
+if __name__ == "__main__":
+    main()

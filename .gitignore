@@ -216,3 +216,13 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# JUST ETC generated artifacts
+.DS_Store
+*.nbc
+*.nbi
+output/
+limit_mag/
+doc/_build/
+compare/
+*.log

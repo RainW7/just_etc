@@ -1,0 +1,8 @@
+include LICENSE README.rst requirements.txt setup.cfg
+recursive-include bin *
+recursive-include doc *.rst *.md *.py *.png
+recursive-include etc *
+recursive-include examples *.py *.md
+recursive-include py/just_etc/data *.dat *.fits
+global-exclude *.pyc *.nbc *.nbi .DS_Store
+prune doc/_build

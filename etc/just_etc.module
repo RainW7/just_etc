@@ -1,0 +1,8 @@
+#%Module1.0
+# Optional modulefile template; pip does not process this file.
+# Set JUST_ETC_ROOT to the checkout/install root before loading this module.
+if { ![info exists env(JUST_ETC_ROOT)] } {
+    error "Set JUST_ETC_ROOT to the just_etc checkout root first"
+}
+prepend-path PATH $env(JUST_ETC_ROOT)/bin
+prepend-path PYTHONPATH $env(JUST_ETC_ROOT)/py
