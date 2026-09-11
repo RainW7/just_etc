@@ -7,7 +7,7 @@ This directory contains the standardized distribution package and codebase for t
 ## 1. Directory Structure & File Map
 
 ```text
-/home/wenrun/ETC_py_v1/
+just_etc/py/
 ├── just_etc_api.py               # [Core Interface] High-level Python API (Recommended entry point)
 ├── ETC_py_optimized.py           # [Core Engine] Vectorized raytracing & SNR physical engine with Numba JIT
 ├── modeldata.py                  # [Physical Database] Atmospheric transmission tables, UVES sky lines & OH airglow
@@ -22,7 +22,6 @@ This directory contains the standardized distribution package and codebase for t
 ├── run_etc_preset.py             # [Batch Runner] Non-interactive automated preset configuration runner
 │
 ├── process_bgs_10k_redrock.py    # [10k Spectra Parallel] Parallel ETC simulator for 10,000 spectra -> Redrock FITS
-├── submit_bgs10k_etc.qsub        # [Cluster Scheduler] PBS (qsub) batch submission script for SJTU Gravity Cluster
 │
 ├── templates/                    # [FITS SED Library] High-resolution spectral templates
 │   ├── galaxy/                   # Elliptical, Spiral (sa, sbc, scd) templates
@@ -43,14 +42,7 @@ This directory contains the standardized distribution package and codebase for t
 ├── photon_loss_seeing.py         # [Analysis] Atmospheric seeing impact on 3-arm fiber coupling
 ├── run_survey_simulations.py     # [Survey Sim] End-to-end spectroscopic survey efficiency simulator
 │
-├── dwarf/                        # [Dwarf Science] Low surface brightness dwarf galaxy observability & kinematics
-│   └── simulate_dwarf_observability.py
-├── limit_mag/                    # [Limiting Mag Data] Limiting magnitude curves and data tables
-├── compare/                      # [Validation] Comparison reports between JUST ETC and justspecsimu / PFS
-│
-├── requirements.txt              # Environment dependencies list (including Numba JIT)
-├── README.md                     # User documentation (Chinese version)
-└── README_EN.md                  # User documentation (English version)
+└── requirements.txt              # Environment dependencies list (including Numba JIT)
 ```
 
 ---
