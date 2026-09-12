@@ -12,8 +12,8 @@ because the original execution environment is Python 3.6 with setuptools 59.6.
 | `cal_exp_time.py` | `py/just_etc/cli.py`; `just-etc` command |
 | `spec.dat` | Installed `py/just_etc/data/spec.dat` and editable `etc/spec.dat` |
 | `templates/*/*.fits` | `py/just_etc/data/templates/`, unchanged binary data |
-| Top-level plotting/simulation/batch Python scripts | `examples/` |
-| `dwarf/simulate_dwarf_observability.py` | `examples/simulate_dwarf_observability.py` |
+| Three representative plots | `examples/`; specialized workflows archived in `examples/archive/` |
+| `dwarf/simulate_dwarf_observability.py` | `examples/archive/simulate_dwarf_observability.py` |
 | `submit_bgs10k_etc.qsub` | Parameterized `bin/submit_bgs10k_etc.qsub` |
 | Existing and source README/manual files | `doc/legacy/`, marked historical |
 | Comparison reports and plots | `doc/validation/` |
@@ -22,8 +22,9 @@ because the original execution environment is Python 3.6 with setuptools 59.6.
 Not published: `.DS_Store`, Python/Numba caches, generated `output/` and `limit_mag/`
 results, template screenshots, large SAGA catalogs, and comparison input datasets.
 The duplicate historical `limit_mag/generate_just_limit.py` remains in the source
-directory; `examples/generate_just_limit.py` uses the top-level source version.
-No original local source files or data were moved or deleted.
+directory; `examples/archive/generate_just_limit.py` uses the top-level source version.
+Archived programs preserve the original scientific workflows, while the showcase plots
+are maintained as the recommended entry points.
 
 Old imports such as `from just_etc_api import ...` should become
 `from just_etc import ...`; low-level access is
