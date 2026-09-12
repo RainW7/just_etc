@@ -1,33 +1,30 @@
-# Research examples
+# JUST ETC showcase
 
-Install `just_etc` first. Run scripts from a writable working directory, for example:
+This directory intentionally keeps only three polished, runnable plots. Together they
+cover the main ETC story without presenting every research scratch script as a supported
+entry point.
+
+| Example | What it demonstrates | Default output |
+| --- | --- | --- |
+| `plot_demo.py` | Template loading, AB normalization, multi-arm S/N, signal and noise | `output/etc_demo_plot.png` |
+| `plot_demo_extended.py` | Sensitivity to atmospheric seeing and target angular size | `output/etc_observing_conditions.png` |
+| `photon_loss_analysis.py` | Instrument, atmosphere, fiber, and extraction losses | `output/photon_budget.png` |
+
+Install `just_etc`, then run the examples from any writable directory:
 
 ```sh
 python /path/to/just_etc/examples/plot_demo.py
+python /path/to/just_etc/examples/plot_demo_extended.py
+python /path/to/just_etc/examples/photon_loss_analysis.py
 ```
 
-Inputs bundled with the package are found independently of the working directory.
-Generated outputs go below the working directory, usually `output/`, `limit_mag/`
-or `compare/`. Scripts retain the scientific settings from the source version;
-inspect them before running expensive simulations.
+Each program supports `--help` and accepts an `--output` path. The first two also expose
+the target and exposure parameters, so they can be reused without editing source code.
+The plotting programs use package-managed template paths and create missing output
+folders automatically.
 
-| Workflows | Scripts |
-| --- | --- |
-| Basic plots | `plot_demo.py`, `plot_demo_extended.py` |
-| Fiber coupling and photon losses | `plot_fiber_*.py`, `photon_loss_*.py` |
-| Limiting magnitude and survey simulations | `generate_just_limit.py`, `run_survey_simulations.py` |
-| Mock and dwarf spectra | `simulate_mock_spectrum.py`, `simulate_dwarf_observability.py` |
-| Low-level presets and exploratory calculation | `run_etc_preset.py`, `calculate_star_snr.py`, `scratch_geo.py` |
-| Throughput FITS export | `generate_just_specdat_fits.py` |
-| Batch FITS simulation | `process_bgs_10k_redrock.py` |
-| Optional DESI/Redrock workflows | `convert_input_fits_to_redrock.py`, `generate_redrock_just_fits.py` |
+## Archived research scripts
 
-The Redrock workflows require `desispec`, `redrock` and their template/configuration
-data. Use your own `RR_TEMPLATE_DIR` if required by that installation. Large input
-spectral libraries and historical comparison datasets are not included. For the
-batch simulator, `--input` and `--output` are required. The PBS file under `bin/`
-is a configurable example, not a preconfigured job for any particular cluster.
-
-Core tests do not execute full survey or Redrock workflows. Historical comparison
-reports live under `doc/validation`; their referenced external datasets must be
-provided separately when reproducing the comparisons.
+Earlier exploratory, batch-processing, and specialized plotting programs are preserved
+under [`archive/`](archive/README.md). They are retained as implementation references,
+not as the recommended showcase, and may require external datasets or optional software.

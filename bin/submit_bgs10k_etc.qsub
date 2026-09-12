@@ -9,6 +9,6 @@ set -euo pipefail
 : "${OUTPUT_SPECTRA:?Set OUTPUT_SPECTRA to the output FITS path}"
 # Activate the environment containing just_etc before submission, or add your
 # cluster-specific module/Conda activation here. Do not hard-code another user.
-python "$JUST_ETC_ROOT/examples/process_bgs_10k_redrock.py" \
+python "$JUST_ETC_ROOT/examples/archive/process_bgs_10k_redrock.py" \
     --input "$INPUT_SPECTRA" --output "$OUTPUT_SPECTRA" \
     --t_exp 900 --n_exp 4 --seeing 0.8 --nproc 16
