@@ -1,6 +1,6 @@
 """
-simulate_mock_spectrum.py
-=========================
+show_mock_spectra.py
+====================
 Simulates realistic 1D observed spectra for different galaxy types using the JUST
 Exposure Time Calculator (ETC) API (`just_etc_api.py`).
 
@@ -47,7 +47,7 @@ def run_simulation_demo():
     print("JUST Spectrograph 1D Mock Spectrum Simulation Demo (SNR/res)")
     print("=" * 70)
 
-    output_dir = _V1_DIR / "output" / "mock_spectra"
+    output_dir = _V1_DIR / "output"
     output_dir.mkdir(parents=True, exist_ok=True)
     plot_save_path = output_dir / "ssp_dwarf_mock_spectrum_demo.png"
 

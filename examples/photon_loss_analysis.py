@@ -9,13 +9,23 @@ import numpy as np
 from just_etc import ETC_py_optimized as ETC_py
 from just_etc import JUSTExposureTimeCalculator
 
-ARM_COLORS = ("#2364AA", "#2A9D8F", "#D1495B")
+ARM_COLORS = ("#1f77b4", "#2ca02c", "#d62728")
 COMPONENT_STYLES = {
-    "Galactic extinction": ("#475569", "-"),
-    "Atmosphere": ("#7C3AED", "--"),
-    "Vignetting": ("#0891B2", "-."),
-    "Fiber injection": ("#E09F3E", "-"),
-    "Trace extraction": ("#9F1239", ":"),
+    "Galactic extinction": ("black", "-"),
+    "Atmosphere": ("purple", "--"),
+    "Vignetting": ("cyan", "-."),
+    "Fiber injection": ("orange", "-"),
+    "Trace extraction": ("brown", ":"),
+}
+
+PLOT_STYLE = {
+    "font.family": "serif",
+    "font.size": 11,
+    "axes.linewidth": 1.2,
+    "xtick.direction": "in",
+    "ytick.direction": "in",
+    "xtick.top": True,
+    "ytick.right": True,
 }
 
 
@@ -44,10 +54,9 @@ def generate_photon_budget(
     field_angle = calculator._obs_params["field_angle"]
     decenter = calculator._obs_params["decenter"]
 
-    with plt.rc_context({"font.family": "sans-serif", "font.size": 11,
-                         "axes.titleweight": "bold", "text.color": "#172033"}):
+    with plt.rc_context(PLOT_STYLE):
         fig, (component_ax, total_ax) = plt.subplots(
-            2, 1, figsize=(11, 8), sharex=True, constrained_layout=True
+            2, 1, figsize=(11, 9), sharex=True
         )
 
         for arm in range(spectrograph.N_arms):
@@ -82,39 +91,40 @@ def generate_photon_budget(
             for name, values in components.items():
                 color, linestyle = COMPONENT_STYLES[name]
                 component_ax.plot(
-                    wavelength, values, color=color, ls=linestyle, lw=1.5,
+                    wavelength, values, color=color, ls=linestyle, lw=2.0,
                     label=name if arm == 0 else None,
                 )
             component_ax.plot(
                 wavelength, instrument, color=ARM_COLORS[arm], lw=2.2,
-                label=f"Arm {arm + 1} instrument",
+                label=f"Instrument throughput (Arm {arm})",
             )
 
             total = instrument.copy()
             for values in components.values():
                 total *= values
             total_ax.plot(wavelength, total, color=ARM_COLORS[arm], lw=2.2,
-                          label=f"Arm {arm + 1}")
-            total_ax.fill_between(wavelength, total, color=ARM_COLORS[arm], alpha=0.12)
+                          label=f"Total system efficiency (Arm {arm})")
+            total_ax.fill_between(wavelength, total, color=ARM_COLORS[arm], alpha=0.2)
 
         for ax in (component_ax, total_ax):
-            ax.grid(axis="y", color="#CBD5E1", lw=0.7, alpha=0.65)
-            ax.spines[["top", "right"]].set_visible(False)
-            ax.set_ylim(0, None)
+            ax.grid(True, linestyle=":", alpha=0.6)
+            ax.set_ylim(0, 0.4)
         component_ax.set_ylim(0, 1.05)
         component_ax.set_ylabel("Transmission")
-        component_ax.set_title("Individual loss terms", loc="left", fontsize=13)
-        component_ax.legend(frameon=False, ncol=3, loc="lower center", fontsize=9)
+        component_ax.set_title("Photon Loss Breakdown: Individual Components", fontsize=13)
+        component_ax.legend(ncol=3, loc="lower center", fontsize=9)
         total_ax.set_ylabel("End-to-end efficiency")
         total_ax.set_xlabel("Wavelength [nm]")
         total_ax.set_xlim(350, 950)
-        total_ax.set_title("Combined photon-collection efficiency", loc="left", fontsize=13)
-        total_ax.legend(frameon=False, ncol=3, loc="upper right")
+        total_ax.set_title("Total End-to-End Photon Collection Efficiency", fontsize=13)
+        total_ax.legend(ncol=3, loc="upper right", fontsize=9)
         fig.suptitle(
-            f"JUST photon budget · seeing {seeing:g}″ · effective radius {effective_radius:g}″",
-            x=0.01, ha="left", fontsize=15, fontweight="bold",
+            f"JUST Photon Budget (Seeing = {seeing:g}″, "
+            f"Effective Radius = {effective_radius:g}″)",
+            fontsize=15,
         )
-        fig.savefig(output, dpi=220, bbox_inches="tight", facecolor="white")
+        fig.tight_layout()
+        fig.savefig(output, dpi=300, bbox_inches="tight")
         plt.close(fig)
 
     print(f"Saved photon budget to {output.resolve()}")

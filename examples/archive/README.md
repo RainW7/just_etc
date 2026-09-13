@@ -6,7 +6,7 @@ maintained as the primary getting-started examples.
 
 - **Fiber and photon-loss studies:** `plot_fiber_*.py`, `photon_loss_seeing.py`
 - **Magnitude and survey simulations:** `generate_just_limit.py`, `run_survey_simulations.py`
-- **Mock and dwarf spectra:** `simulate_mock_spectrum.py`, `simulate_dwarf_observability.py`
+- **Dwarf spectra:** `simulate_dwarf_observability.py`
 - **Low-level experiments:** `run_etc_preset.py`, `calculate_star_snr.py`, `scratch_geo.py`
 - **FITS and Redrock workflows:** `generate_just_specdat_fits.py`,
   `convert_input_fits_to_redrock.py`, `generate_redrock_just_fits.py`, and

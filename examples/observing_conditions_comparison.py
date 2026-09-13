@@ -8,7 +8,16 @@ import numpy as np
 
 from just_etc import JUSTExposureTimeCalculator, load_template, normalize_to_mag
 
-COLORS = ("#2364AA", "#2A9D8F", "#E09F3E", "#D1495B")
+COLORS = ("#1f77b4", "#2ca02c", "#ff7f0e", "#d62728")
+PLOT_STYLE = {
+    "font.family": "serif",
+    "font.size": 11,
+    "axes.linewidth": 1.2,
+    "xtick.direction": "in",
+    "ytick.direction": "in",
+    "xtick.top": True,
+    "ytick.right": True,
+}
 
 
 def _smooth(values, width=11):
@@ -33,14 +42,16 @@ def generate_conditions_plot(
     calculator = JUSTExposureTimeCalculator(calc_mode="fast")
 
     scenarios = (
-        ("Atmospheric seeing", [(0.6, '0.6″'), (0.8, '0.8″'), (1.2, '1.2″'), (1.5, '1.5″')]),
+        (
+            "Atmospheric seeing",
+            [(0.6, '0.6″'), (0.8, '0.8″'), (1.2, '1.2″'), (1.5, '1.5″')],
+        ),
         ("Source effective radius", [(0.0, 'Point source'), (0.3, 'Compact · 0.3″'),
                                      (1.0, 'Extended · 1.0″'), (2.0, 'Extended · 2.0″')]),
     )
 
-    with plt.rc_context({"font.family": "sans-serif", "font.size": 11,
-                         "axes.titleweight": "bold", "text.color": "#172033"}):
-        fig, axes = plt.subplots(2, 1, figsize=(11, 8), sharex=True, constrained_layout=True)
+    with plt.rc_context(PLOT_STYLE):
+        fig, axes = plt.subplots(2, 1, figsize=(11, 8), sharex=True)
         for index, (title, values) in enumerate(scenarios):
             ax = axes[index]
             for color, (value, label) in zip(COLORS, values):
@@ -56,23 +67,23 @@ def generate_conditions_plot(
                     ax.plot(arm_result["wave_nm"], _smooth(arm_result["snr"]),
                             color=color, lw=1.6, label=label if arm == 0 else None)
 
-            ax.axhline(5, color="#64748B", ls="--", lw=1, label="S/N = 5")
+            ax.axhline(5, color="gray", ls="--", lw=1.0, alpha=0.8, label="S/N = 5")
             subtitle = "Point source" if index == 0 else 'Seeing = 0.8″'
-            ax.set_title(f"{title}  ·  {subtitle}", loc="left", fontsize=13)
+            ax.set_title(f"{title} ({subtitle})", fontsize=13)
             ax.set_ylabel("S/N per pixel")
             ax.set_ylim(bottom=0)
-            ax.grid(axis="y", color="#CBD5E1", lw=0.7, alpha=0.65)
-            ax.spines[["top", "right"]].set_visible(False)
-            ax.legend(frameon=False, ncol=5, loc="upper right", fontsize=9)
+            ax.grid(True, linestyle=":", alpha=0.6)
+            ax.legend(ncol=5, loc="upper right", fontsize=9)
 
         axes[-1].set_xlabel("Observed wavelength [nm]")
         axes[-1].set_xlim(350, 950)
         fig.suptitle(
-            f"Sensitivity to observing conditions · r={magnitude:g} AB · z={redshift:g} · "
-            f"{exposures} × {exposure_time:g} s",
-            x=0.01, ha="left", fontsize=15, fontweight="bold",
+            f"Sensitivity to Observing Conditions (r = {magnitude:g} AB mag, z = {redshift:g}, "
+            f"{exposures} × {exposure_time:g} s)",
+            fontsize=15,
         )
-        fig.savefig(output, dpi=220, bbox_inches="tight", facecolor="white")
+        fig.tight_layout()
+        fig.savefig(output, dpi=300, bbox_inches="tight")
         plt.close(fig)
 
     print(f"Saved observing-condition comparison to {output.resolve()}")
