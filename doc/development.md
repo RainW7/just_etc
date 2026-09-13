@@ -130,5 +130,34 @@ python -m build
 版本号位于 `py/just_etc/_version.py`。发布新版本时更新版本和变更说明，完成
 测试后再创建版本标签；不要将 GitHub 上传与 PyPI 发布混为一谈。
 
+## 自动创建 GitHub Release
+
+`.github/workflows/release.yml` 在推送符合 `v*.*.*` 格式的 tag 时自动执行：
+
+1. 检查 tag 版本与 `just_etc.__version__` 完全一致；
+2. 在 Python 3.10、3.11 和 3.12 上运行测试；
+3. 构建 source distribution 和 wheel；
+4. 验证 wheel 中的 `just-etc` 命令；
+5. 创建 GitHub Release、自动生成 release notes，并上传 `dist/` 中的构建产物。
+
+例如发布 1.2.0 时，先在工作分支中将 `py/just_etc/_version.py` 更新为：
+
+```python
+__version__ = "1.2.0"
+```
+
+提交、测试并通过 Pull Request 合并到 `main` 后执行：
+
+```sh
+git switch main
+git pull --ff-only
+git tag -a v1.2.0 -m "JUST ETC v1.2.0"
+git push origin v1.2.0
+```
+
+只有最后一条 tag push 会触发正式发布。普通 branch push 和 Pull Request 不会创建
+Release。tag 和包版本不一致、测试失败或构建失败时，workflow 会停止且不会发布。
+不要移动或覆盖已经发布的版本 tag；修复后应使用新的 patch 版本，例如 1.1.1。
+
 macOS 默认文件系统通常不区分大小写： `JUST_ETC` 与 `just_etc` 可能是
 同一目录。克隆到新目录时选择明确不同的名称，避免混入历史工作文件。
