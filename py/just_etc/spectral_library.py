@@ -130,13 +130,15 @@ def _make_fibermap(target_ids):
         "TARGETID": target_ids,
         "RA": 150.0 + (index % 1000) * 0.001,
         "DEC": 2.0 + (index // 1000) * 0.001,
+        "TILEID": np.zeros(n_spectra, dtype=np.int32),
+        "COADD_FIBERSTATUS": np.zeros(n_spectra, dtype=np.int32),
         "FIBER": (index % 4000).astype(np.int32),
         "SPECTROGRAPH": ((index // 500) % 8).astype(np.int16),
         "OBJTYPE": np.full(n_spectra, "TGT", dtype="U3"),
     })
 
 
-def convet_to_redrock_format(
+def convert_to_redrock_format(
     wave,
     flux,
     output,
@@ -190,10 +192,9 @@ def convet_to_redrock_format(
 
     Notes
     -----
-    The public function name retains the spelling requested for the issue:
-    ``convet_to_redrock_format``. The output resolution arrays use an identity
-    kernel, as in the original batch example; this does not represent a
-    measured or modeled JUST line-spread function.
+    The output resolution arrays use an identity kernel, as in the original
+    batch example; this does not represent a measured or modeled JUST
+    line-spread function.
     """
     wave_aa = np.asarray(wave, dtype=np.float64)
     flux_library = np.asarray(flux, dtype=np.float64)

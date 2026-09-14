@@ -1,7 +1,7 @@
 import numpy as np
 from astropy.io import fits
 
-from just_etc import convet_to_redrock_format
+from just_etc import convert_to_redrock_format
 from just_etc import spectral_library
 
 
@@ -31,7 +31,7 @@ class _FakeCalculator:
         return result
 
 
-def test_convet_to_redrock_format_writes_spectral_library(tmp_path, monkeypatch):
+def test_convert_to_redrock_format_writes_spectral_library(tmp_path, monkeypatch):
     _FakeCalculator.seen_fluxes = []
     monkeypatch.setattr(spectral_library, "JUSTExposureTimeCalculator", _FakeCalculator)
     wave = np.array([4000.0, 5000.0, 6000.0])
@@ -42,7 +42,7 @@ def test_convet_to_redrock_format_writes_spectral_library(tmp_path, monkeypatch)
     input_copy = flux.copy()
     output = tmp_path / "library_redrock.fits"
 
-    result = convet_to_redrock_format(
+    result = convert_to_redrock_format(
         wave,
         flux,
         output,
@@ -63,6 +63,13 @@ def test_convet_to_redrock_format_writes_spectral_library(tmp_path, monkeypatch)
 
     with fits.open(output, checksum=True) as hdul:
         assert hdul["FIBERMAP"].data["TARGETID"].tolist() == [77, 88]
+        fibermap = hdul["FIBERMAP"].data
+        np.testing.assert_array_equal(fibermap["TILEID"], [0, 0])
+        np.testing.assert_array_equal(fibermap["COADD_FIBERSTATUS"], [0, 0])
+        assert fibermap["TILEID"].dtype.kind == "i"
+        assert fibermap["TILEID"].dtype.itemsize == 4
+        assert fibermap["COADD_FIBERSTATUS"].dtype.kind == "i"
+        assert fibermap["COADD_FIBERSTATUS"].dtype.itemsize == 4
         assert hdul["B_WAVELENGTH"].data.shape == (3,)
         assert hdul["B_FLUX"].data.shape == (2, 3)
         assert hdul["B_IVAR"].data.shape == (2, 3)
@@ -74,12 +81,12 @@ def test_convet_to_redrock_format_writes_spectral_library(tmp_path, monkeypatch)
         assert all(hdu.verify_checksum() == 1 for hdu in hdul)
 
 
-def test_convet_to_redrock_format_accepts_single_spectrum(tmp_path, monkeypatch):
+def test_convert_to_redrock_format_accepts_single_spectrum(tmp_path, monkeypatch):
     monkeypatch.setattr(spectral_library, "JUSTExposureTimeCalculator", _FakeCalculator)
     wave = np.array([4000.0, 5000.0, 6000.0])
     output = tmp_path / "single_redrock.fits"
 
-    convet_to_redrock_format(
+    convert_to_redrock_format(
         wave,
         np.ones(wave.size),
         output,
@@ -92,9 +99,9 @@ def test_convet_to_redrock_format_accepts_single_spectrum(tmp_path, monkeypatch)
         assert hdul["SCORES"].data["TARGETID"].tolist() == [9]
 
 
-def test_convet_to_redrock_format_validates_input_shapes(tmp_path):
+def test_convert_to_redrock_format_validates_input_shapes(tmp_path):
     with np.testing.assert_raises_regex(ValueError, "strictly increasing"):
-        convet_to_redrock_format(
+        convert_to_redrock_format(
             [4000.0, 3999.0],
             [1.0, 2.0],
             tmp_path / "invalid.fits",
@@ -102,7 +109,7 @@ def test_convet_to_redrock_format_validates_input_shapes(tmp_path):
         )
 
     with np.testing.assert_raises_regex(ValueError, "flux must have shape"):
-        convet_to_redrock_format(
+        convert_to_redrock_format(
             [4000.0, 5000.0],
             [[1.0, 2.0, 3.0]],
             tmp_path / "invalid.fits",

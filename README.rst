@@ -69,9 +69,9 @@ Redrock FITS file with the Python API:
 
 .. code-block:: python
 
-    from just_etc import convet_to_redrock_format
+    from just_etc import convert_to_redrock_format
 
-    output = convet_to_redrock_format(
+    output = convert_to_redrock_format(
         wave, flux, "output/just_redrock.fits",
         t_exp=900, n_exp=4, nproc=8,
     )

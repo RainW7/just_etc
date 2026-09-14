@@ -13,7 +13,7 @@ maintained as the primary getting-started examples.
   `process_bgs_10k_redrock.py`
 
 For a Python API that accepts wavelength and flux arrays directly, use
-`from just_etc import convet_to_redrock_format`. The archived
+`from just_etc import convert_to_redrock_format`. The archived
 `process_bgs_10k_redrock.py` command remains as a wrapper for its legacy input
 FITS layout and delegates the ETC simulation and Redrock output to this API.
 
