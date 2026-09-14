@@ -63,6 +63,47 @@ The first invocation may take longer while Numba compiles numerical kernels.
 The CLI uses a starburst template by default; ``--target point`` changes spatial
 extent only. Supply ``--template /path/to/stellar.fits`` for a stellar SED.
 
+For an in-memory spectral library whose flux is already scaled to
+``10^-17 erg s^-1 cm^-2 Angstrom^-1``, simulate and write a multi-target
+Redrock FITS file with the Python API:
+
+.. code-block:: python
+
+    from just_etc import convet_to_redrock_format
+
+    output = convet_to_redrock_format(
+        wave, flux, "output/just_redrock.fits",
+        t_exp=900, n_exp=4, nproc=8,
+    )
+
+``wave`` is a one-dimensional observed-frame wavelength array in Angstroms;
+``flux`` has shape ``(n_spectra, n_wave)``. A one-dimensional flux array is
+also accepted for one target. The function creates the parent output directory
+and returns the output ``Path``. See ``doc/api.rst`` and
+``examples/archive/process_bgs_10k_redrock.py`` for additional options and the
+legacy FITS-input wrapper.
+
+Generate a galaxy spectrum with ``just_specsim``, simulate its observation with
+JUST ETC, and save both Redrock-compatible FITS and a three-panel spectrum/SNR
+plot (run from the repository root):
+
+.. code-block:: bash
+
+    python examples/simulate_justspecsim_spectrum.py \
+        --just-specsim-root /path/to/just_specsim \
+        --redshift 0.2 --absolute-magnitude-r -21 --color-gr 0.7 \
+        --apparent-magnitude 20.0 --exposure-time 900 --exposures 4 \
+        --output output/mock_z02_r20.fits \
+        --plot-output output/mock_z02_r20.png
+
+Use ``--help`` to see all available options. For this bridge, ``M_r`` and
+``g-r`` select the closest intrinsic template, while ``--apparent-magnitude``
+sets its final DECam r brightness. Output paths are relative to the current
+working directory. The bridge requires a Python >=3.10 environment with both
+packages' dependencies and a ``just_specsim`` checkout with its BGS basis
+templates; see ``examples/README.md`` for parameter details and a Python API
+example.
+
 Repository layout
 -----------------
 
@@ -102,4 +143,7 @@ Research outputs, caches, screenshots and the large external SAGA catalog are
 not required for the package and are not included. Historical manuals and
 comparison reports are retained under ``doc/legacy`` and ``doc/validation``;
 their historical results are not new validation of the model. Optional
-DESI/Redrock workflows require their own dependencies and input datasets.
+DESI/Redrock workflows require their own dependencies and input datasets. The
+``examples/simulate_justspecsim_spectrum.py`` bridge additionally requires a
+``just_specsim`` checkout containing its BGS basis templates; see
+``examples/README.md`` for the unit convention and command-line example.
