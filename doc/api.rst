@@ -9,3 +9,5 @@ Python API
 .. autofunction:: just_etc.list_templates
 
 .. autofunction:: just_etc.normalize_to_mag
+
+.. autofunction:: just_etc.convet_to_redrock_format
