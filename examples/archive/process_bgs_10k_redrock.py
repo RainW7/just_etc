@@ -4,7 +4,7 @@ This archived command-line wrapper reads the historical two-HDU input format:
 the primary HDU contains a wavelength vector in Angstroms, and the next HDU
 contains spectra in ``10^-17 erg s^-1 cm^-2 Angstrom^-1``. The reusable
 array-based implementation is available as
-``just_etc.convet_to_redrock_format``.
+``just_etc.convert_to_redrock_format``.
 
 Example
 -------
@@ -20,7 +20,7 @@ from pathlib import Path
 import numpy as np
 from astropy.io import fits
 
-from just_etc import convet_to_redrock_format
+from just_etc import convert_to_redrock_format
 
 
 def process_spectral_library(
@@ -59,7 +59,7 @@ def process_spectral_library(
     if target_ids is not None and target_ids.size != flux.shape[0]:
         target_ids = None
 
-    return convet_to_redrock_format(
+    return convert_to_redrock_format(
         wave,
         flux,
         output_fits_path,

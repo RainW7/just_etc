@@ -138,7 +138,7 @@ def _make_fibermap(target_ids):
     })
 
 
-def convet_to_redrock_format(
+def convert_to_redrock_format(
     wave,
     flux,
     output,
@@ -192,10 +192,9 @@ def convet_to_redrock_format(
 
     Notes
     -----
-    The public function name retains the spelling requested for the issue:
-    ``convet_to_redrock_format``. The output resolution arrays use an identity
-    kernel, as in the original batch example; this does not represent a
-    measured or modeled JUST line-spread function.
+    The output resolution arrays use an identity kernel, as in the original
+    batch example; this does not represent a measured or modeled JUST
+    line-spread function.
     """
     wave_aa = np.asarray(wave, dtype=np.float64)
     flux_library = np.asarray(flux, dtype=np.float64)
