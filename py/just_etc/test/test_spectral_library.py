@@ -63,6 +63,13 @@ def test_convet_to_redrock_format_writes_spectral_library(tmp_path, monkeypatch)
 
     with fits.open(output, checksum=True) as hdul:
         assert hdul["FIBERMAP"].data["TARGETID"].tolist() == [77, 88]
+        fibermap = hdul["FIBERMAP"].data
+        np.testing.assert_array_equal(fibermap["TILEID"], [0, 0])
+        np.testing.assert_array_equal(fibermap["COADD_FIBERSTATUS"], [0, 0])
+        assert fibermap["TILEID"].dtype.kind == "i"
+        assert fibermap["TILEID"].dtype.itemsize == 4
+        assert fibermap["COADD_FIBERSTATUS"].dtype.kind == "i"
+        assert fibermap["COADD_FIBERSTATUS"].dtype.itemsize == 4
         assert hdul["B_WAVELENGTH"].data.shape == (3,)
         assert hdul["B_FLUX"].data.shape == (2, 3)
         assert hdul["B_IVAR"].data.shape == (2, 3)
