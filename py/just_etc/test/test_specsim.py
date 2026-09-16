@@ -6,13 +6,11 @@ from astropy.io import fits
 from scipy.spatial import cKDTree
 import matplotlib.pyplot as plt
 
-# import sys
-# sys.path.append("../py/just_specsim")
-# from maker import SpectrumMaker
-
-from just_specsim.maker import SpectrumMaker
-
 if __name__ == "__main__":
+    # just_specsim is optional for the just_etc unit-test suite and is only
+    # required when running this standalone spectrum demo.
+    from just_specsim.maker import SpectrumMaker
+
     specmaker = SpectrumMaker()
     # wave, flux, meta, objmeta = specmaker(z=0.1, Mr=-21.0, color=0.7, saveto='./mockspectra/')
     wave, flux, meta, objmeta = specmaker(z=0.1, Mr=-21.0, color=0.7, saveto=None)
